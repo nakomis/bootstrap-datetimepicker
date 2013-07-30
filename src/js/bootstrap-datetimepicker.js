@@ -470,7 +470,7 @@
           html += '<tr>';
           for (var j = 0; j < 4; j += 1) {
              var c = current.toString();
-             html += '<td class="hour">' + padLeft(c, 2, '0') + '</td>';
+             html += '<td class="hour">' + padLeft(c, 1, '0') + '</td>';
              current++;
           }
           html += '</tr>'
@@ -481,7 +481,7 @@
           html += '<tr>';
           for (var j = 0; j < 4; j += 1) {
              var c = current.toString();
-             html += '<td class="hour">' + padLeft(c, 2, '0') + '</td>';
+             html += '<td class="hour">' + padLeft(c, 1, '0') + '</td>';
              current++;
           }
           html += '</tr>'
@@ -541,7 +541,7 @@
         this.widget.find(
           '.timepicker [data-action=togglePeriod]').text(period);
       }
-      hour = padLeft(hour.toString(), 2, '0');
+      hour = padLeft(hour.toString(), 1, '0');
       var minute = padLeft(this._date.getUTCMinutes().toString(), 2, '0');
       var second = padLeft(this._date.getUTCSeconds().toString(), 2, '0');
       timeComponents.filter('[data-time-component=hours]').text(hour);
@@ -855,6 +855,9 @@
         }
         if (methodName === 'getUTCMonth') rv = rv + 1;
         if (methodName === 'getUTCYear') rv = rv + 1900 - 2000;
+        if (match === 'yy') {
+            rv = new String(rv).slice(-2);
+        }
         return padLeft(rv.toString(), len, '0');
       });
     },
@@ -1114,14 +1117,17 @@
 
   var dateFormatComponents = {
     dd: {property: 'UTCDate', getPattern: function() { return '(0?[1-9]|[1-2][0-9]|3[0-1])\\b';}},
+    d: {property: 'UTCDate', getPattern: function() { return '(0?[1-9]|[1-2][0-9]|3[0-1])\\b';}},
     MM: {property: 'UTCMonth', getPattern: function() {return '(0?[1-9]|1[0-2])\\b';}},
-    yy: {property: 'UTCYear', getPattern: function() {return '(\\d{2})\\b'}},
+    M: {property: 'UTCMonth', getPattern: function() {return '(0?[1-9]|1[0-2])\\b';}},
+    yy: {property: 'UTCFullYear', getPattern: function() {return '(\\d{2})\\b'}},
     yyyy: {property: 'UTCFullYear', getPattern: function() {return '(\\d{4})\\b';}},
     hh: {property: 'UTCHours', getPattern: function() {return '(0?[0-9]|1[0-9]|2[0-3])\\b';}},
     mm: {property: 'UTCMinutes', getPattern: function() {return '(0?[0-9]|[1-5][0-9])\\b';}},
     ss: {property: 'UTCSeconds', getPattern: function() {return '(0?[0-9]|[1-5][0-9])\\b';}},
     ms: {property: 'UTCMilliseconds', getPattern: function() {return '([0-9]{1,3})\\b';}},
     HH: {property: 'Hours12', getPattern: function() {return '(0?[1-9]|1[0-2])\\b';}},
+    H: {property: 'Hours12', getPattern: function() {return '(0?[1-9]|1[0-2])\\b';}},
     PP: {property: 'Period12', getPattern: function() {return '(AM|PM|am|pm|Am|aM|Pm|pM)\\b';}}
   };
 
